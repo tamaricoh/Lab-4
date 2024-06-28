@@ -102,8 +102,6 @@ void load_into_memory(state *s)
     fclose(file);
 }
 
-
-
 void toggle_display_mode(state* s) {
     if (s->display_mode) {
         printf("Display flag now off, decimal representation\n");
