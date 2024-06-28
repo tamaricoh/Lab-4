@@ -95,8 +95,34 @@ void toggle_display_mode(state* s) {
 }
 
 void memory_display(state* s) {
-    (void)s; // Mark parameter as unused
-    printf("Not implemented yet\n");
+    printf("Enter address and length:\n");
+    char input[256];
+    unsigned int addr;
+    int u;
+    fgets(input, sizeof(input), stdin);
+    sscanf(input, "%x %d", &addr, &u);
+
+    if (s->display_mode) {
+        printf("Hexadecimal\n");
+        printf("===========\n");
+        for (int i = 0; i < u; ++i) {
+            if (addr == 0) {
+                printf("%#x\n", *((unsigned int*)(s->mem_buf + i * s->unit_size)));
+            } else {
+                printf("%#x\n", *((unsigned int*)(s->mem_buf + (addr + i) * s->unit_size)));
+            }
+        }
+    } else {
+        printf("Decimal\n");
+        printf("=======\n");
+        for (int i = 0; i < u; ++i) {
+            if (addr == 0) {
+                printf("%u\n", *((unsigned int*)(s->mem_buf + i * s->unit_size)));
+            } else {
+                printf("%u\n", *((unsigned int*)(s->mem_buf + (addr + i) * s->unit_size)));
+            }
+        }
+    }
 }
 
 void save_into_file(state* s) {
