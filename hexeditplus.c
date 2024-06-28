@@ -125,15 +125,65 @@ void memory_display(state* s) {
     }
 }
 
-void save_into_file(state* s) {
-    (void)s; // Mark parameter as unused
-    printf("Not implemented yet\n");
+void save_into_file(state* s) 
+{
+    if(strcmp("", s-> file_name)== 0) {
+        printf("Error: empty file name\n");
+        return;
+    }
+    FILE* file= fopen(s-> file_name, "r+");    
+    if(file== NULL) {
+        printf("Error: unable to open file\n");
+        return;
+    }
+    printf("Please enter <source-address> <target-location> <length>:\n");
+    int address= 0;
+    int location= 0;
+    int length= 0;
+    scanf("%x %x %d", &address, &location, &length);
+    fseek(file, 0, SEEK_END);   
+    long file_size= ftell(file);
+    if(location> file_size) {    
+        printf("Error: target location is greater than the file size\n");
+        fclose(file);
+        return;
+    }
+    fseek(file, location, SEEK_SET);  
+    if(address== 0) {
+        fwrite(&s->mem_buf, s->unit_size, length, file);
+    } 
+    else {
+        fwrite(&address, s->unit_size, length, file);
+    }
+
+    printf("Wrote %d units into file\n", length);       
+    fclose(file);
 }
 
 void memory_modify(state* s) {
-    (void)s; // Mark parameter as unused
-    printf("Not implemented yet\n");
+    printf("Please enter <location> <val>:\n");
+    char input[256];
+    unsigned int location;
+    unsigned int val;
+    fgets(input, sizeof(input), stdin);
+    sscanf(input, "%x %x", &location, &val);
+
+    if (s->debug_mode) {
+        fprintf(stderr, "Debug: location: %#x, val: %#x\n", location, val);
+    }
+
+    // Check if location is within valid bounds based on unit_size
+    if (location + s->unit_size > sizeof(s->mem_buf)) {
+        printf("Error: Invalid location (out of bounds)\n");
+        return;
+    }
+
+    // Modify memory at the specified location
+    memcpy(s->mem_buf + location, &val, s->unit_size);
+
+    printf("Modified memory at %#x with %#x\n", location, val);
 }
+
 
 void quit(state* s) {
     if (s->debug_mode) {
@@ -181,6 +231,7 @@ int main(void) {
         } else {
             printf("Invalid choice\n");
         }
+        if (choice == 6) while (getchar() != '\n');
     }
 
     return 0;
