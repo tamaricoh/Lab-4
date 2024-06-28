@@ -8,7 +8,7 @@ typedef struct {
     int unit_size;
     unsigned char mem_buf[10000];
     size_t mem_count;
-    /* Any additional fields you deem necessary */
+    char display_mode;  // New field for display mode
 } state;
 
 void toggle_debug_mode(state* s) {
@@ -85,8 +85,13 @@ void load_into_memory(state* s) {
 }
 
 void toggle_display_mode(state* s) {
-    (void)s; // Mark parameter as unused
-    printf("Not implemented yet\n");
+    if (s->display_mode) {
+        printf("Display flag now off, decimal representation\n");
+        s->display_mode = 0;
+    } else {
+        printf("Display flag now on, hexadecimal representation\n");
+        s->display_mode = 1;
+    }
 }
 
 void memory_display(state* s) {
@@ -117,7 +122,7 @@ typedef struct {
 } menu_item;
 
 int main(void) {
-    state s = {0, "", 1, {0}, 0};
+    state s = {0, "", 1, {0}, 0, 0}; // Initialize display_mode to 0 (decimal mode)
     menu_item menu[] = {
         {"Toggle Debug Mode", toggle_debug_mode},
         {"Set File Name", set_file_name},
