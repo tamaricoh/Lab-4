@@ -78,6 +78,7 @@ void load_into_memory(state *s)
     printf("Loaded %d units into memory\n",length);
     
     s->mem_count = s->unit_size * length;
+    printf("s->mem_count : %d\n",s->mem_count);
     fclose(file);
 }
 
@@ -169,7 +170,6 @@ void memory_modify(state* s) {
         fprintf(stderr, "Debug: location: %#x, val: %#x\n", location, val);
     }
 
-    // Check if location is within valid bounds based on unit_size
     if (location + s->unit_size > sizeof(s->mem_buf)) {
         printf("Error: Invalid location (out of bounds)\n");
         return;
