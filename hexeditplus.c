@@ -47,27 +47,6 @@ void set_unit_size(state* s) {
     while (getchar() != '\n'); // Clear the input buffer
 }
 
-// void load_into_memory(state* s) {
-
-
-//     // Position file pointer to specified location
-//     fseek(file, location, SEEK_SET);
-
-//     // Calculate bytes to read based on unit size
-//     size_t bytes_to_read = length * s->unit_size;
-
-//     // Read bytes into memory buffer
-//     size_t bytes_read = fread(s->mem_buf, 1, bytes_to_read, file);
-//     s->mem_count = bytes_read / s->unit_size; // Update memory count
-
-//     if (bytes_read != bytes_to_read) {
-//         printf("Warning: could only read %zu bytes\n", bytes_read);
-//     }
-
-//     printf("Loaded %zu units into memory\n", s->mem_count);
-
-//     fclose(file);
-// }
 void load_into_memory(state *s)
 {
     if (strcmp(s->file_name, "") == 0) {
@@ -196,7 +175,6 @@ void memory_modify(state* s) {
         return;
     }
 
-    // Modify memory at the specified location
     memcpy(s->mem_buf + location, &val, s->unit_size);
 
     printf("Modified memory at %#x with %#x\n", location, val);
