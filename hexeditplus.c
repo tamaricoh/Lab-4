@@ -147,12 +147,8 @@ void save_into_file(state* s)
         return;
     }
     fseek(file, location, SEEK_SET);  
-    if(address== 0) {
-        fwrite(&s->mem_buf, s->unit_size, length, file);
-    } 
-    else {
-        fwrite(&address, s->unit_size, length, file);
-    }
+    fwrite(s->mem_buf + address, s->unit_size, length, file); //watch out
+
 
     printf("Wrote %d units into file\n", length);       
     fclose(file);
@@ -194,7 +190,7 @@ typedef struct {
 } menu_item;
 
 int main(void) {
-    state s = {0, "", 1, {0}, 0, 0}; // Initialize display_mode to 0 (decimal mode)
+    state s = {0, "deep_thought", 1, {0}, 0, 0}; // Initialize display_mode to 0 (decimal mode)
     menu_item menu[] = {
         {"Toggle Debug Mode", toggle_debug_mode},
         {"Set File Name", set_file_name},
