@@ -2,11 +2,11 @@ CC = gcc
 
 CFLAGS = -Wall -Wextra -std=c99 -m32 -fno-pie -fno-stack-protector
 
-TARGET1 = hexeditplus
-TARGET2 = count_digit
+TARGET1 = task1
+TARGET2 = task4
 
-SRCS1 = hexeditplus.c
-SRCS2 = count_digit.c
+SRCS1 = task1.c
+SRCS2 = task4.c
 
 OBJS1 = $(SRCS1:.c=.o) 
 OBJS2 = $(SRCS2:.c=.o)
