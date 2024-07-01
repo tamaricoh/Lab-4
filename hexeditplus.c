@@ -147,7 +147,12 @@ void save_into_file(state* s)
         return;
     }
     fseek(file, location, SEEK_SET);  
-    fwrite(s->mem_buf + address, s->unit_size, length, file); //watch out
+    if(address== 0) {
+        fwrite(&s->mem_buf, s->unit_size, length, file);
+    } 
+    else {
+        fwrite(&address, s->unit_size, length, file);
+    }
 
 
     printf("Wrote %d units into file\n", length);       
